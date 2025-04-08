@@ -100,22 +100,44 @@ document.addEventListener('DOMContentLoaded', () => {
         mensajeConfirmacion.style.display = 'none';
     });
 
-    // Para ver las regiones y comunas del archivo
     document.addEventListener("DOMContentLoaded", () => {
-        const select = document.getElementById("regiones");
+        const regionSelect = document.getElementById("region");
+        const comunaSelect = document.getElementById("comuna");
       
-        if (!select || !region_comuna) {
-          console.error("No se encontró el select o la variable region_comuna.");
+        // Evitar errores si no está definida
+        if (!region_comuna || !region_comuna.regiones) {
+          console.error("No se encontró region_comuna o regiones.");
           return;
         }
       
+        // Poblar regiones
         region_comuna.regiones.forEach(region => {
           const option = document.createElement("option");
-          option.text = region.nombre;
+          option.textContent = region.nombre;
           option.value = region.numero;
-          select.add(option);
+          regionSelect.appendChild(option);
+        });
+      
+        // Actualizar comunas según región seleccionada
+        regionSelect.addEventListener("change", () => {
+          const regionSeleccionada = region_comuna.regiones.find(
+            r => r.numero == regionSelect.value
+          );
+      
+          comunaSelect.innerHTML = '<option value="">Seleccione una comuna</option>';
+          comunaSelect.disabled = !regionSeleccionada;
+      
+          if (regionSeleccionada) {
+            regionSeleccionada.comunas.forEach(comuna => {
+              const option = document.createElement("option");
+              option.textContent = comuna.nombre;
+              option.value = comuna.id;
+              comunaSelect.appendChild(option);
+            });
+          }
         });
       });
+      
       
     // Mostrar campo de red social si "contactar por" es diferente de vacío
     document.getElementById('contactar-por').addEventListener('change', (e) => {
