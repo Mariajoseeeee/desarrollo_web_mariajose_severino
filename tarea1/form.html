@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agregar Actividad</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="form.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Formulario de Nueva Actividad</h1>
+  </header>
+  <main>
+    <form id="form-actividad">
+      <h3>Información del Lugar</h3>
+      <label for="region">Región</label>
+      <select id="region" required>
+        <option value="">Seleccione</option>
+        <option value="1">Región Metropolitana</option>
+      </select>
+
+      <label for="comuna">Comuna</label>
+      <select id="comuna" required>
+        <option value="">Seleccione</option>
+        <option value="Santiago">Santiago</option>
+      </select>
+
+      <label for="sector">Sector</label>
+      <input type="text" id="sector" maxlength="100">
+
+      <h3>Datos del Organizador</h3>
+      <label for="nombre">Nombre</label>
+      <input type="text" id="nombre" required maxlength="200">
+
+      <label for="email">Email</label>
+      <input type="email" id="email" required maxlength="100">
+
+      <label for="telefono">Número de celular</label>
+      <input type="tel" id="telefono" placeholder="+569.12345678">
+
+      <label for="contactar-por">Contactar por</label>
+      <select id="contactar-por">
+        <option value="whatsapp">WhatsApp</option>
+        <option value="telegram">Telegram</option>
+        <option value="instagram">Instagram</option>
+      </select>
+
+      <div id="contactos-extra"></div>
+      <div id="id-red-social-container" style="display:none;">
+        <label for="id-red-social">ID de contacto</label>
+        <input type="text" id="id-red-social">
+      </div>
+
+      <div id="mensaje-confirmacion" style="display: none;">
+        <p>¿Estás seguro de que quieres enviar esta actividad?</p>
+        <button type="button" id="confirmar-si">Sí</button>
+        <button type="button" id="confirmar-no">No</button>
+      </div>
+      
+      
+
+      <h3>Información de la Actividad</h3>
+      <label for="dia-hora-inicio">Día y Hora de Inicio</label>
+      <input type="datetime-local" id="dia-hora-inicio" required>
+
+      <label for="dia-hora-fin">Día y Hora de Término</label>
+      <input type="datetime-local" id="dia-hora-fin">
+
+      <label for="descripcion">Descripción</label>
+      <textarea id="descripcion" rows="4"></textarea>
+
+      <label for="tema">Tema</label>
+      <select id="tema" required>
+        <option value="música">Música</option>
+        <option value="deporte">Deporte</option>
+        <option value="otro">Otro</option>
+      </select>
+
+      <input type="text" id="otro-tema" class="oculto" maxlength="15">
+
+      <label for="foto">Foto</label>
+      <input type="file" id="foto" required>
+
+      <button type="button" id="btn-agregar-foto">Agregar otra foto</button>
+
+      <button type="submit">Agregar esta actividad</button>
+    </form>
+  </main>
+</body>
+</html>
