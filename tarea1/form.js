@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('form-actividad');
     const mensajeConfirmacion = document.getElementById('mensaje-confirmacion');
@@ -39,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Información de la actividad
         const inicio = document.getElementById('dia-hora-inicio').value;
-        const termino = document.getElementById('termino').value;
+        const termino = document.getElementById('dia-hora-fin').value;
         const descripcion = document.getElementById('descripcion').value;
         const tema = document.getElementById('tema').value;
         const foto = document.getElementById('foto').files.length;
@@ -98,7 +99,24 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('confirmar-no').addEventListener('click', () => {
         mensajeConfirmacion.style.display = 'none';
     });
-    
+
+    // Para ver las regiones y comunas del archivo
+    document.addEventListener("DOMContentLoaded", () => {
+        const select = document.getElementById("regiones");
+      
+        if (!select || !region_comuna) {
+          console.error("No se encontró el select o la variable region_comuna.");
+          return;
+        }
+      
+        region_comuna.regiones.forEach(region => {
+          const option = document.createElement("option");
+          option.text = region.nombre;
+          option.value = region.numero;
+          select.add(option);
+        });
+      });
+      
     // Mostrar campo de red social si "contactar por" es diferente de vacío
     document.getElementById('contactar-por').addEventListener('change', (e) => {
         if (e.target.value !== '') {

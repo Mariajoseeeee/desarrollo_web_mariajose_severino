@@ -15,30 +15,31 @@
   <main>
     <form id="form-actividad">
       <h3>Información del Lugar</h3>
-      <label for="region">Región</label>
-      <select id="region" required>
-        <option value="">Seleccione</option>
-        <option value="1">Región Metropolitana</option>
+    
+
+      <label for="region">Región:</label>
+      <select id="region" name="region">
+        <option value="">Seleccione una región</option>
       </select>
 
-      <label for="comuna">Comuna</label>
-      <select id="comuna" required>
-        <option value="">Seleccione</option>
-        <option value="Santiago">Santiago</option>
+      <label for="comuna">Comuna:</label>
+      <select id="comuna" name="comuna" disabled>
+        <option value="">Seleccione una comuna</option>
       </select>
+
 
       <label for="sector">Sector</label>
-      <input type="text" id="sector" maxlength="100">
+      <input type="text" id="sector">
 
       <h3>Datos del Organizador</h3>
       <label for="nombre">Nombre</label>
-      <input type="text" id="nombre" required maxlength="200">
+      <input type="text" id="nombre">
 
       <label for="email">Email</label>
-      <input type="email" id="email" required maxlength="100">
+      <input type="text" id="email">
 
       <label for="telefono">Número de celular</label>
-      <input type="tel" id="telefono" placeholder="+569.12345678">
+      <input type="text" id="telefono" placeholder="+56912345678">
 
       <label for="contactar-por">Contactar por</label>
       <select id="contactar-por">
@@ -63,7 +64,7 @@
 
       <h3>Información de la Actividad</h3>
       <label for="dia-hora-inicio">Día y Hora de Inicio</label>
-      <input type="datetime-local" id="dia-hora-inicio" required>
+      <input type="datetime-local" id="dia-hora-inicio">
 
       <label for="dia-hora-fin">Día y Hora de Término</label>
       <input type="datetime-local" id="dia-hora-fin">
@@ -72,20 +73,20 @@
       <textarea id="descripcion" rows="4"></textarea>
 
       <label for="tema">Tema</label>
-      <select id="tema" required>
+      <select id="tema">
         <option value="música">Música</option>
         <option value="deporte">Deporte</option>
         <option value="otro">Otro</option>
       </select>
 
-      <input type="text" id="otro-tema" class="oculto" maxlength="15">
+      <input type="text" id="otro-tema" class="oculto">
 
       <label for="foto">Foto</label>
-      <input type="file" id="foto" required>
+      <input type="file" id="foto">
 
       <button type="button" id="btn-agregar-foto">Agregar otra foto</button>
 
-      <button type="submit">Agregar esta actividad</button>
+      <button type="button">Agregar esta actividad</button>
     </form>
   </main>
 </body>
