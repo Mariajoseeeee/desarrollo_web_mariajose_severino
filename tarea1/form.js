@@ -153,6 +153,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const nuevoInputFoto = document.createElement('input');
         nuevoInputFoto.type = 'file';
         nuevoInputFoto.accept = 'image/*';
-        document.getElementById('fotos-container').appendChild(nuevoInputFoto);
+        document.getElementById('agregar-foto').appendChild(nuevoInputFoto);
     });
 });
