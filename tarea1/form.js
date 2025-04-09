@@ -1,158 +1,168 @@
-
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('form-actividad');
+    const form = document.getElementById('form-actividades');
     const mensajeConfirmacion = document.getElementById('mensaje-confirmacion');
-    
-    // Valida que el teléfono tenga el formato adecuado.
-    const validarTelefono = (telefono) => {
-        const regexTelefono = /^\+56[0-9]{9}$/; // Formato +56912345678
-        return regexTelefono.test(telefono);
-    };
 
-    // Valida que el email tenga el formato adecuado.
-    const validarEmail = (email) => {
-        const regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-        return regexEmail.test(email);
-    };
+    const validarTelefono = (telefono) => /^\+56[0-9]{8}$/.test(telefono);
+    const validarEmail = (email) => /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/.test(email);
+    const validarFechas = (inicio, termino) => new Date(termino) > new Date(inicio);
 
-    // Valida las fechas de inicio y término.
-    const validarFechas = (inicio, termino) => {
-        const fechaInicio = new Date(inicio);
-        const fechaTermino = new Date(termino);
-        return fechaTermino > fechaInicio; // El término debe ser después del inicio
-    };
-
-    // Validación del formulario al momento de enviarlo.
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        // Información del lugar
         const region = document.getElementById('region').value;
         const comuna = document.getElementById('comuna').value;
         const sector = document.getElementById('sector').value;
 
-        // Datos del organizador
-        const nombre = document.getElementById('nombre').value;
-        const email = document.getElementById('email').value;
-        const telefono = document.getElementById('telefono').value;
+        const nombre = document.getElementById('nombre').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const telefono = document.getElementById('telefono').value.trim();
         const contactarPor = document.getElementById('contactar-por').value;
-        const idRedSocial = document.getElementById('id-red-social').value;
+        const idRedSocial = document.getElementById('id-red-social')?.value.trim() || '';
 
-        // Información de la actividad
         const inicio = document.getElementById('dia-hora-inicio').value;
         const termino = document.getElementById('dia-hora-fin').value;
-        const descripcion = document.getElementById('descripcion').value;
+        const descripcion = document.getElementById('descripcion').value.trim();
         const tema = document.getElementById('tema').value;
-        const foto = document.getElementById('foto').files.length;
-        
-        // Validación de lugar
+        const fotos = document.querySelectorAll('#fotos-container input[type="file"]');
+
         if (!region || !comuna) {
             alert("La región y comuna son obligatorios.");
             return;
         }
-        
-        // Validación de organizador
-        if (nombre.length === 0 || nombre.length > 200) {
+
+        if (sector.length > 100) {
+            alert("El sector no puede tener más de 100 caracteres.");
+            return;
+        }
+
+        if (!nombre || nombre.length > 200) {
             alert("El nombre del organizador es obligatorio y debe tener un máximo de 200 caracteres.");
             return;
         }
-        if (!validarEmail(email)) {
-            alert("Por favor ingrese un correo electrónico válido.");
+
+        if (!validarEmail(email) || email.length > 100) {
+            alert("Por favor ingrese un correo electrónico válido y no mayor a 100 caracteres.");
             return;
         }
+
         if (telefono && !validarTelefono(telefono)) {
             alert("El número de teléfono debe estar en el formato +56912345678.");
             return;
         }
 
-        // Validación de la actividad
-        if (!validarFechas(inicio, termino)) {
+        if (contactarPor && (idRedSocial.length < 4 || idRedSocial.length > 50)) {
+            alert("El ID o URL de red social debe tener entre 4 y 50 caracteres.");
+            return;
+        }
+
+        if (!inicio) {
+            alert("La fecha y hora de inicio es obligatoria.");
+            return;
+        }
+
+        if (termino && !validarFechas(inicio, termino)) {
             alert("La fecha de término debe ser posterior a la de inicio.");
             return;
         }
+
         if (!tema) {
             alert("El tema es obligatorio.");
             return;
         }
-        if (tema === 'otro' && (idRedSocial.length < 3 || idRedSocial.length > 15)) {
-            alert("La descripción del tema 'otro' debe tener entre 3 y 15 caracteres.");
-            return;
+
+        if (tema === 'Otro') {
+            const descripcionTema = document.getElementById('tema-otro').value.trim();
+            if (descripcionTema.length < 3 || descripcionTema.length > 15) {
+                alert("La descripción del tema 'otro' debe tener entre 3 y 15 caracteres.");
+                return;
+            }
         }
-        
-        // Validación de fotos
-        if (foto === 0 || foto > 5) {
+
+        if (fotos.length === 0 || fotos.length > 5) {
             alert("Debes agregar entre 1 y 5 fotos.");
             return;
         }
 
-        // Mostrar confirmación
         mensajeConfirmacion.style.display = 'block';
     });
 
-    // Botón de confirmación "Sí"
     document.getElementById('confirmar-si').addEventListener('click', () => {
         alert("Hemos recibido su información, muchas gracias y suerte en su actividad.");
-        window.location.href = 'index.html';  // Redirige a la portada
+        window.location.href = 'index.html';
     });
 
-    // Botón de cancelación "No"
     document.getElementById('confirmar-no').addEventListener('click', () => {
         mensajeConfirmacion.style.display = 'none';
     });
 
-    document.addEventListener("DOMContentLoaded", () => {
-        const regionSelect = document.getElementById("region");
-        const comunaSelect = document.getElementById("comuna");
-      
-        // Evitar errores si no está definida
-        if (!region_comuna || !region_comuna.regiones) {
-          console.error("No se encontró region_comuna o regiones.");
-          return;
-        }
-      
-        // Poblar regiones
+    // Región y comuna
+    const regionSelect = document.getElementById("region");
+    const comunaSelect = document.getElementById("comuna");
+
+    if (typeof region_comuna !== 'undefined' && region_comuna.regiones) {
         region_comuna.regiones.forEach(region => {
-          const option = document.createElement("option");
-          option.textContent = region.nombre;
-          option.value = region.numero;
-          regionSelect.appendChild(option);
+            const option = document.createElement("option");
+            option.textContent = region.nombre;
+            option.value = region.numero;
+            regionSelect.appendChild(option);
         });
-      
-        // Actualizar comunas según región seleccionada
+
         regionSelect.addEventListener("change", () => {
-          const regionSeleccionada = region_comuna.regiones.find(
-            r => r.numero == regionSelect.value
-          );
-      
-          comunaSelect.innerHTML = '<option value="">Seleccione una comuna</option>';
-          comunaSelect.disabled = !regionSeleccionada;
-      
-          if (regionSeleccionada) {
-            regionSeleccionada.comunas.forEach(comuna => {
-              const option = document.createElement("option");
-              option.textContent = comuna.nombre;
-              option.value = comuna.id;
-              comunaSelect.appendChild(option);
-            });
-          }
+            const regionSeleccionada = region_comuna.regiones.find(r => r.numero == regionSelect.value);
+            comunaSelect.innerHTML = '<option value="">Seleccione una comuna</option>';
+            comunaSelect.disabled = !regionSeleccionada;
+
+            if (regionSeleccionada) {
+                regionSeleccionada.comunas.forEach(comuna => {
+                    const option = document.createElement("option");
+                    option.textContent = comuna.nombre;
+                    option.value = comuna.id;
+                    comunaSelect.appendChild(option);
+                });
+            }
         });
-      });
-      
-      
-    // Mostrar campo de red social si "contactar por" es diferente de vacío
+    }
+
+    // Mostrar/ocultar campo de red social
     document.getElementById('contactar-por').addEventListener('change', (e) => {
-        if (e.target.value !== '') {
-            document.getElementById('id-red-social-container').style.display = 'block';
+        let contenedor = document.getElementById('id-red-social-container');
+        if (!contenedor) {
+            contenedor = document.createElement('div');
+            contenedor.id = 'id-red-social-container';
+            contenedor.innerHTML = `
+                <label for="id-red-social">ID o URL de red social</label>
+                <input type="text" id="id-red-social">
+            `;
+            e.target.insertAdjacentElement('afterend', contenedor);
+        }
+        contenedor.style.display = e.target.value ? 'block' : 'none';
+    });
+
+    // Tema "Otro"
+    const selectTema = document.getElementById('tema');
+    const inputTemaOtro = document.getElementById('tema-otro');
+    const containerTemaOtro = document.getElementById('tema-otro-container');
+
+    selectTema.addEventListener('change', () => {
+        if (selectTema.value === 'Otro') {
+            containerTemaOtro.style.display = 'block';
         } else {
-            document.getElementById('id-red-social-container').style.display = 'none';
+            containerTemaOtro.style.display = 'none';
+            inputTemaOtro.value = '';
         }
     });
 
-    // Mostrar campo de foto adicional si se hace click en el botón
+    // Agregar fotos adicionales
     document.getElementById('agregar-foto').addEventListener('click', () => {
-        const nuevoInputFoto = document.createElement('input');
-        nuevoInputFoto.type = 'file';
-        nuevoInputFoto.accept = 'image/*';
-        document.getElementById('agregar-foto').appendChild(nuevoInputFoto);
+        const fotosContainer = document.getElementById('fotos-container');
+        const totalFotos = fotosContainer.querySelectorAll('input[type="file"]').length;
+        if (totalFotos < 5) {
+            const nuevoInput = document.createElement('input');
+            nuevoInput.type = 'file';
+            nuevoInput.accept = 'image/*';
+            fotosContainer.appendChild(nuevoInput);
+        } else {
+            alert("No puedes agregar más de 5 fotos.");
+        }
     });
 });
