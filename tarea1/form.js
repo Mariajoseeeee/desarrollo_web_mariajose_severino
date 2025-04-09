@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('form-actividades');
     const mensajeConfirmacion = document.getElementById('mensaje-confirmacion');
 
-    const validarTelefono = (telefono) => /^\+56[0-9]{8}$/.test(telefono);
+    const validarTelefono = (telefono) => /^\+569\d{8}$/.test(telefono);
     const validarEmail = (email) => /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/.test(email);
     const validarFechas = (inicio, termino) => new Date(termino) > new Date(inicio);
 
@@ -46,14 +46,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (telefono && !validarTelefono(telefono)) {
-            alert("El número de teléfono debe estar en el formato +56912345678.");
+            alert("El número de teléfono debe estar en el formato +56912345678");
             return;
         }
 
-        if (contactarPor && (idRedSocial.length < 4 || idRedSocial.length > 50)) {
+        if (contactarPor && idRedSocial && (idRedSocial.length < 4 || idRedSocial.length > 50)) {
             alert("El ID o URL de red social debe tener entre 4 y 50 caracteres.");
             return;
         }
+        
+
 
         if (!inicio) {
             alert("La fecha y hora de inicio es obligatoria.");
@@ -82,6 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert("Debes agregar entre 1 y 5 fotos.");
             return;
         }
+        
 
         mensajeConfirmacion.style.display = 'block';
     });
@@ -123,20 +126,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Mostrar/ocultar campo de red social
     document.getElementById('contactar-por').addEventListener('change', (e) => {
-        let contenedor = document.getElementById('id-red-social-container');
-        if (!contenedor) {
-            contenedor = document.createElement('div');
-            contenedor.id = 'id-red-social-container';
-            contenedor.innerHTML = `
-                <label for="id-red-social">ID o URL de red social</label>
-                <input type="text" id="id-red-social">
-            `;
-            e.target.insertAdjacentElement('afterend', contenedor);
+        const contenedor = document.getElementById('id-red-social-container');
+        const redSeleccionada = e.target.value;
+    
+        // Solo mostrar campo extra si es necesario
+        if (redSeleccionada === 'instagram' || redSeleccionada === 'telegram') {
+            contenedor.style.display = 'block';
+        } else {
+            contenedor.style.display = 'none';
+            document.getElementById('id-red-social').value = ''; // limpiar el campo
         }
-        contenedor.style.display = e.target.value ? 'block' : 'none';
     });
+    
 
     // Tema "Otro"
     const selectTema = document.getElementById('tema');

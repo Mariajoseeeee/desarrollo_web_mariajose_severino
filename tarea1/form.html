@@ -44,13 +44,20 @@
 
       <label for="contactar-por">Contactar por</label>
       <select id="contactar-por">
+        <option value="">Seleccione una opción</option>
         <option value="whatsapp">WhatsApp</option>
         <option value="telegram">Telegram</option>
+        <option value="x">X</option>
         <option value="instagram">Instagram</option>
+        <option value="tiktok">TikTok</option>
+        <option value="otra">Otra</option>
       </select>
       
+      <div id="id-red-social-container" style="display: none;">
+        <label for="id-red-social">ID o URL de red social</label>
+        <input type="text" id="id-red-social">
+      </div>
       
-
       <h3>Información de la Actividad</h3>
       <label for="dia-hora-inicio">Día y Hora de Inicio</label>
       <input type="datetime-local" id="dia-hora-inicio">
