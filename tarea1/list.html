@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Listado de Actividades</title>
   <link rel="stylesheet" href="style.css">
-  <script src="listado.js"></script>
-
-  
+  <script src="listado.js" defer></script>
 </head>
 <body>
   <header>
@@ -15,27 +13,36 @@
   </header>
   <main>
     <div id="detalleActividad" style="display: none;"></div>
+    
     <div id="imagenAmpliada" style="display: none; position: fixed; top: 0; left: 0; 
       width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); text-align: center;">
-      <img id="imgGrande" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Imagen ampliada" style="max-width: 800px; max-height: 600px; margin-top: 50px;">
+      <img id="imgGrande" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" 
+           alt="Imagen ampliada" 
+           style="max-width: 800px; max-height: 600px; margin-top: 50px;">
       <br>
       <button onclick="cerrarImagen()">Cerrar</button>
     </div>
-  
 
     <table id="tablaActividades">
       <thead>
+        <tr>
+          <th>Inicio</th>
+          <th>Término</th>
+          <th>Comuna</th>
+          <th>Sector</th>
+          <th>Actividad</th>
+        </tr>
+      </thead>
+      <tbody>
         <tr data-id="1">
           <td>2025-03-28 12:00</td>
           <td>2025-03-28 14:00</td>
           <td>Santiago</td>
           <td>Beauchef 850, Terraza</td>
           <td>
-            Escuela de Boxeo
-            <br>
+            Escuela de Boxeo<br>
             <img src="hasbullaboxeo.jpg" width="200" height="200" alt="Escuela de Boxeo">
           </td>
-          
         </tr>
         <tr data-id="2">
           <td>2025-03-29 19:00</td>
@@ -43,8 +50,7 @@
           <td>Ñuñoa</td>
           <td>Plaza</td>
           <td>
-            Cómo deshidratar fruta
-            <br>
+            Cómo deshidratar fruta<br>
             <img src="fruta.webp" width="200" height="200" alt="Cómo deshidratar fruta">
           </td>
         </tr>
@@ -54,8 +60,7 @@
           <td>Santiago</td>
           <td>Parque O´higgins</td>
           <td>
-            Música urbana
-            <br>
+            Música urbana<br>
             <img src="urbana.jpg" width="200" height="200" alt="Música urbana">
           </td>
         </tr>
@@ -65,8 +70,7 @@
           <td>Las Condes</td>
           <td>Centro Cultural</td>
           <td>
-            Exposición de Arte Contemporáneo
-            <br>
+            Exposición de Arte Contemporáneo<br>
             <img src="arte.jpg" width="200" height="200" alt="Arte contemporáneo">
           </td>
         </tr>
@@ -76,16 +80,12 @@
           <td>Maipu</td>
           <td>Teatro Municipal</td>
           <td>
-            Teatro Infantil: "La Sirenita"
-            <br>
+            Teatro Infantil: "La Sirenita"<br>
             <img src="teatro.jpg" width="200" height="200" alt="Obra de teatro infantil">
           </td>
         </tr>
-        
-      
+      </tbody>
     </table>
-
-    
   </main>
 </body>
 </html>

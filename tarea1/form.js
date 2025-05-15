@@ -1,170 +1,168 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('form-actividades');
-    const mensajeConfirmacion = document.getElementById('mensaje-confirmacion');
 
-    const validarTelefono = (telefono) => /^\+569\d{8}$/.test(telefono);
-    const validarEmail = (email) => /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/.test(email);
-    const validarFechas = (inicio, termino) => new Date(termino) > new Date(inicio);
+const validateName = (name) => {
+if (!name) return false;
+let lengthValid = name.trim().length > 0 && name.trim().length <= 200;
+return lengthValid;
+};
 
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
+const validateEmail = (email) => {
+if (!email) return false;
+let lengthValid = email.length <= 100;
+let re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+let formatValid = re.test(email);
+return lengthValid && formatValid;
+};
 
-        const region = document.getElementById('region').value;
-        const comuna = document.getElementById('comuna').value;
-        const sector = document.getElementById('sector').value;
+const validatePhoneNumber = (phoneNumber) => {
+if (!phoneNumber) return true; 
+let re = /^\+569\d{8}$/;
+return re.test(phoneNumber);
+};
 
-        const nombre = document.getElementById('nombre').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const telefono = document.getElementById('telefono').value.trim();
-        const contactarPor = document.getElementById('contactar-por').value;
-        const idRedSocial = document.getElementById('id-red-social')?.value.trim() || '';
+const validateFechaInicio = (inicio) => {
+return inicio && inicio.length > 0;
+};
 
-        const inicio = document.getElementById('dia-hora-inicio').value;
-        const termino = document.getElementById('dia-hora-fin').value;
-        const descripcion = document.getElementById('descripcion').value.trim();
-        const tema = document.getElementById('tema').value;
-        const fotos = document.querySelectorAll('#fotos-container input[type="file"]');
+const validateFechas = (inicio, termino) => {
+if (!termino) return true;
+return new Date(termino) > new Date(inicio);
+};
 
-        if (!region || !comuna) {
-            alert("La región y comuna son obligatorios.");
-            return;
-        }
+const validateTemaOtro = (tema, descripcion) => {
+if (tema !== "Otro") return true;
+return descripcion.length >= 3 && descripcion.length <= 15;
+};
 
-        if (sector.length > 100) {
-            alert("El sector no puede tener más de 100 caracteres.");
-            return;
-        }
+const validateIdRedSocial = (contactarPor, idRed) => {
+if (!contactarPor || !idRed) return true;
+return idRed.length >= 4 && idRed.length <= 50;
+};
 
-        if (!nombre || nombre.length > 200) {
-            alert("El nombre del organizador es obligatorio y debe tener un máximo de 200 caracteres.");
-            return;
-        }
+const validateSector = (sector) => {
+return sector.length <= 100;
+};
 
-        if (!validarEmail(email) || email.length > 100) {
-            alert("Por favor ingrese un correo electrónico válido y no mayor a 100 caracteres.");
-            return;
-        }
+const validateRegionComuna = (region, comuna) => {
+return !!region && !!comuna;
+};
 
-        if (telefono && !validarTelefono(telefono)) {
-            alert("El número de teléfono debe estar en el formato +56912345678");
-            return;
-        }
-
-        if (contactarPor && idRedSocial && (idRedSocial.length < 4 || idRedSocial.length > 50)) {
-            alert("El ID o URL de red social debe tener entre 4 y 50 caracteres.");
-            return;
-        }
-        
-
-
-        if (!inicio) {
-            alert("La fecha y hora de inicio es obligatoria.");
-            return;
-        }
-
-        if (termino && !validarFechas(inicio, termino)) {
-            alert("La fecha de término debe ser posterior a la de inicio.");
-            return;
-        }
-
-        if (!tema) {
-            alert("El tema es obligatorio.");
-            return;
-        }
-
-        if (tema === 'Otro') {
-            const descripcionTema = document.getElementById('tema-otro').value.trim();
-            if (descripcionTema.length < 3 || descripcionTema.length > 15) {
-                alert("La descripción del tema 'otro' debe tener entre 3 y 15 caracteres.");
-                return;
-            }
-        }
-
-        if (fotos.length === 0 || fotos.length > 5) {
-            alert("Debes agregar entre 1 y 5 fotos.");
-            return;
-        }
-        
-
-        mensajeConfirmacion.style.display = 'block';
-    });
-
-    document.getElementById('confirmar-si').addEventListener('click', () => {
-        alert("Hemos recibido su información, muchas gracias y suerte en su actividad.");
-        window.location.href = 'index.html';
-    });
-
-    document.getElementById('confirmar-no').addEventListener('click', () => {
-        mensajeConfirmacion.style.display = 'none';
-    });
-
-    // Región y comuna
-    const regionSelect = document.getElementById("region");
-    const comunaSelect = document.getElementById("comuna");
-
-    if (typeof region_comuna !== 'undefined' && region_comuna.regiones) {
-        region_comuna.regiones.forEach(region => {
-            const option = document.createElement("option");
-            option.textContent = region.nombre;
-            option.value = region.numero;
-            regionSelect.appendChild(option);
-        });
-
-        regionSelect.addEventListener("change", () => {
-            const regionSeleccionada = region_comuna.regiones.find(r => r.numero == regionSelect.value);
-            comunaSelect.innerHTML = '<option value="">Seleccione una comuna</option>';
-            comunaSelect.disabled = !regionSeleccionada;
-
-            if (regionSeleccionada) {
-                regionSeleccionada.comunas.forEach(comuna => {
-                    const option = document.createElement("option");
-                    option.textContent = comuna.nombre;
-                    option.value = comuna.id;
-                    comunaSelect.appendChild(option);
-                });
-            }
-        });
+const validateFotos = () => {
+    // Obtener todos los inputs de tipo file para fotos
+    let fotoInputs = document.querySelectorAll('input[name="fotos"], input[name="fotos[]"]');
+    let totalFiles = 0;
+    
+    // Contar el total de archivos seleccionados
+    for (let input of fotoInputs) {
+        totalFiles += input.files.length;
     }
-
-    document.getElementById('contactar-por').addEventListener('change', (e) => {
-        const contenedor = document.getElementById('id-red-social-container');
-        const redSeleccionada = e.target.value;
     
-        // Solo mostrar campo extra si es necesario
-        if (redSeleccionada === 'instagram' || redSeleccionada === 'telegram') {
-            contenedor.style.display = 'block';
-        } else {
-            contenedor.style.display = 'none';
-            document.getElementById('id-red-social').value = ''; // limpiar el campo
-        }
+    return totalFiles >= 1 && totalFiles <= 5;
+};
+
+const validateTema = (tema) => {
+return tema && tema.length > 0;
+};
+
+const validateForm = () => {
+let myForm = document.forms["myForm"];
+
+let region = myForm["region"].value;
+let comuna = myForm["comuna"].value;
+let sector = myForm["sector"].value;
+let nombre = myForm["nombre"].value;
+let email = myForm["email"].value;
+let telefono = myForm["telefono"].value;
+let contactarPor = myForm["contactar-por"].value;
+let idRedSocial = myForm["id-red-social"]?.value || "";
+let inicio = myForm["dia-hora-inicio"].value;
+let termino = myForm["dia-hora-fin"].value;
+let tema = myForm["tema"].value;
+let temaOtro = myForm["tema-otro"]?.value || "";
+let fotos = myForm["fotos"].files;
+
+let isValid = true;
+let invalidInputs = [];
+
+const setInvalidInput = (inputName) => {
+    invalidInputs.push(inputName);
+    isValid = false;
+};
+
+if (!validateRegionComuna(region, comuna)) setInvalidInput("Región y Comuna");
+if (!validateSector(sector)) setInvalidInput("Sector (máx. 100 caracteres)");
+if (!validateName(nombre)) setInvalidInput("Nombre (obligatorio, máx. 200 caracteres)");
+if (!validateEmail(email)) setInvalidInput("Correo electrónico (válido y máx. 100 caracteres)");
+if (!validatePhoneNumber(telefono)) setInvalidInput("Teléfono (+569XXXXXXXX)");
+if (!validateIdRedSocial(contactarPor, idRedSocial)) setInvalidInput("ID de red social (4-50 caracteres)");
+if (!validateFechaInicio(inicio)) setInvalidInput("Fecha/hora de inicio (obligatoria)");
+if (!validateFechas(inicio, termino)) setInvalidInput("Fecha de término debe ser posterior a inicio");
+if (!validateTema(tema)) setInvalidInput("Tema");
+if (!validateTemaOtro(tema, temaOtro)) setInvalidInput("Tema 'Otro' (3-15 caracteres)");
+if (!validateFotos(fotos)) setInvalidInput("Fotos (entre 1 y 5)");
+
+let validationBox = document.getElementById("val-box");
+let validationMessageElem = document.getElementById("val-msg");
+let validationListElem = document.getElementById("val-list");
+
+if (!isValid) {
+    validationListElem.textContent = "";
+    for (let input of invalidInputs) {
+    let li = document.createElement("li");
+    li.textContent = input;
+    validationListElem.appendChild(li);
+    }
+    validationMessageElem.innerText = "Los siguientes campos son inválidos:";
+    validationBox.style.backgroundColor = "#ffdddd";
+    validationBox.style.borderLeftColor = "#f44336";
+    validationBox.hidden = false;
+} else {
+    myForm.style.display = "none";
+    validationMessageElem.innerText = "¡Formulario válido! ¿Deseas enviarlo o volver?";
+    validationListElem.textContent = "";
+
+    let submitButton = document.createElement("button");
+    submitButton.innerText = "Enviar";
+    submitButton.style.marginRight = "10px";
+    submitButton.addEventListener("click", () => {
+    alert("Hemos recibido su información, muchas gracias y suerte en su actividad.");
+    window.location.href = "index.html";
     });
+
+    let backButton = document.createElement("button");
+    backButton.innerText = "Volver";
+    backButton.addEventListener("click", () => {
+    myForm.style.display = "block";
+    validationBox.hidden = true;
+    });
+
+    validationListElem.appendChild(submitButton);
+    validationListElem.appendChild(backButton);
+
+    validationBox.style.backgroundColor = "#ddffdd";
+    validationBox.style.borderLeftColor = "#4CAF50";
+    validationBox.hidden = false;
+}
+};
+
+document.getElementById("submit-btn").addEventListener("click", validateForm);
+
+// Agrega esto a tu JavaScript para mantener los inputs anteriores
+document.querySelector('select[name="contactar-por"]').addEventListener('change', function() {
+    const selectedOption = this.value;
+    const contactContainer = document.getElementById('contactMethodsContainer'); // Ajusta el ID según tu HTML
     
-
-    // Tema "Otro"
-    const selectTema = document.getElementById('tema');
-    const inputTemaOtro = document.getElementById('tema-otro');
-    const containerTemaOtro = document.getElementById('tema-otro-container');
-
-    selectTema.addEventListener('change', () => {
-        if (selectTema.value === 'Otro') {
-            containerTemaOtro.style.display = 'block';
-        } else {
-            containerTemaOtro.style.display = 'none';
-            inputTemaOtro.value = '';
-        }
-    });
-
-    // Agregar fotos adicionales
-    document.getElementById('agregar-foto').addEventListener('click', () => {
-        const fotosContainer = document.getElementById('fotos-container');
-        const totalFotos = fotosContainer.querySelectorAll('input[type="file"]').length;
-        if (totalFotos < 5) {
-            const nuevoInput = document.createElement('input');
-            nuevoInput.type = 'file';
-            nuevoInput.accept = 'image/*';
-            fotosContainer.appendChild(nuevoInput);
-        } else {
-            alert("No puedes agregar más de 5 fotos.");
-        }
-    });
+    // Crear un nuevo div para contener el label y el input
+    const newContactMethod = document.createElement('div');
+    newContactMethod.className = 'contact-method';
+    
+    // Crear el nuevo input
+    newContactMethod.innerHTML = `
+        <label for="id-red-social-${selectedOption}">ID de ${selectedOption}:</label>
+        <input type="text" name="id-red-social-${selectedOption}" 
+               minlength="4" maxlength="50" 
+               placeholder="Tu ID en ${selectedOption}">
+    `;
+    
+    // Agregar el nuevo método de contacto al contenedor
+    contactContainer.appendChild(newContactMethod);
 });

@@ -1,22 +1,29 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Agregar Actividad</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
   <script src="region_comuna.js" defer></script>
   <script src="form.js" defer></script>
-
 </head>
 <body>
   <header>
     <h1>Formulario de Nueva Actividad</h1>
   </header>
   <main>
-    <form id="form-actividades">
+  
+   
+    <div id="val-box" hidden style="border-left: 6px solid; padding: 10px; margin-bottom: 20px;">
+      <p id="val-msg"></p>
+      <ul id="val-list"></ul>
+    </div>
+
+
+    <form id="form-actividades" name="myForm">
+
       <h3>Información del Lugar</h3>
-    
 
       <label for="region">Región:</label>
       <select id="region" name="region">
@@ -28,22 +35,21 @@
         <option value="">Seleccione una comuna</option>
       </select>
 
-
       <label for="sector">Sector</label>
-      <input type="text" id="sector">
+      <input type="text" id="sector" name="sector" />
 
       <h3>Datos del Organizador</h3>
       <label for="nombre">Nombre</label>
-      <input type="text" id="nombre">
+      <input type="text" id="nombre" name="nombre" />
 
       <label for="email">Email</label>
-      <input type="text" id="email">
+      <input type="text" id="email" name="email" />
 
       <label for="telefono">Número de celular</label>
-      <input type="text" id="telefono" placeholder="+56912345678">
+      <input type="text" id="telefono" name="telefono" placeholder="+56912345678" />
 
       <label for="contactar-por">Contactar por</label>
-      <select id="contactar-por">
+      <select id="contactar-por" name="contactar-por">
         <option value="">Seleccione una opción</option>
         <option value="whatsapp">WhatsApp</option>
         <option value="telegram">Telegram</option>
@@ -52,24 +58,29 @@
         <option value="tiktok">TikTok</option>
         <option value="otra">Otra</option>
       </select>
-      
+
+
       <div id="id-red-social-container" style="display: none;">
         <label for="id-red-social">ID o URL de red social</label>
-        <input type="text" id="id-red-social">
+        <input type="text" id="id-red-social" />
       </div>
-      
+
+  
+      <div id="contactMethodsContainer" style="margin-top: 10px;"></div>
+
       <h3>Información de la Actividad</h3>
+
       <label for="dia-hora-inicio">Día y Hora de Inicio</label>
-      <input type="datetime-local" id="dia-hora-inicio">
+      <input type="datetime-local" id="dia-hora-inicio" name="dia-hora-inicio" />
 
       <label for="dia-hora-fin">Día y Hora de Término</label>
-      <input type="datetime-local" id="dia-hora-fin">
+      <input type="datetime-local" id="dia-hora-fin" name="dia-hora-fin" />
 
       <label for="descripcion">Descripción</label>
-      <textarea id="descripcion" rows="4"></textarea>
+      <textarea id="descripcion" name="descripcion" rows="4"></textarea>
 
       <label for="tema">Tema</label>
-      <select id="tema">
+      <select id="tema" name="tema">
         <option value="">Seleccione un tema</option>
         <option value="Música">Música</option>
         <option value="Deporte">Deporte</option>
@@ -83,29 +94,26 @@
         <option value="Otro">Otro</option>
       </select>
 
-
       <div id="tema-otro-container" style="display: none;">
         <label for="tema-otro">Describe el tema:</label>
-        <input type="text" id="tema-otro" name="tema-otro">
+        <input type="text" id="tema-otro" name="tema-otro" />
       </div>
 
       <div id="fotos-container">
-        <input type="file" id="foto" accept="image/*">
+        <input type="file" id="foto" name="fotos" accept="image/*" />
       </div>
       <button type="button" id="agregar-foto">Agregar otra foto</button>
-      
-      <button type="submit">Agregar esta actividad</button>
 
+
+      <button type="button" id="submit-btn">Agregar esta actividad</button>
     </form>
-    
+
     <div id="mensaje-confirmacion" style="display: none;">
       <p>¿Estás seguro de que quieres enviar esta actividad?</p>
       <button type="button" id="confirmar-si">Sí, estoy seguro</button>
       <button type="button" id="confirmar-no">No, no estoy seguro, quiero volver al formulario</button>
-
     </div>
 
-    
     <a href="index.html">Volver a la portada</a>
   </main>
 </body>

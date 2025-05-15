@@ -124,4 +124,41 @@ body {
     display: inline-block;
     margin-top: 10px;
   }
+  #val-box {
+    border-left: 6px solid #d63384; /* rosado fuerte */
+    background-color: #ffe6f0;      /* rosado claro */
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    color: #c71585;
+    transition: background-color 0.3s ease, border-left-color 0.3s ease;
+    font-weight: bold;
+  }
+  
+  #val-box ul {
+    margin: 10px 0 0 20px;
+    padding: 0;
+    color: #b0006b;
+  }
+  
+  #val-box ul li {
+    list-style-type: disc;
+    margin-bottom: 5px;
+  }
+  
+  #val-box button {
+    background-color: #ffb6c1;
+    color: white;
+    padding: 10px 15px;
+    margin-top: 15px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  #val-box button:hover {
+    background-color: #ff69b4;
+  }
   
