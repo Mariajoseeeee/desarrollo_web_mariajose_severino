@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8" >
+  <meta name="viewport" content="width=device-width, initial-scale=1" >
   <title>Listado de Actividades</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" >
   <script src="{{ url_for('static', filename='js/listado.js') }}" defer></script>
 </head>
 <body>
   <header><h1>Listado de Actividades</h1></header>
   <main>
 
-    <table id="tablaActividades" border="1">
+    <table id="tablaActividades" class="tabla-actividades" >
       <thead>
         <tr>
           <th>Nombre</th><th>Comuna</th><th>Inicio</th><th>Término</th><th>Imagen</th>
@@ -19,7 +19,7 @@
       </thead>
       <tbody>
         {% for act in actividades %}
-          <tr data-id="{{ act.id }}" style="cursor: pointer;">
+          <tr data-id="{{ act.id }}" class="fila-actividad">
             <td>{{ act.descripcion }}</td>
             <td>{{ act.comuna.nombre }}</td>
             <td>{{ act.dia_hora_inicio }}</td>
@@ -29,14 +29,12 @@
               <img src="{{ url_for('static', filename='uploads/' ~ act.fotos[0].nombre_archivo) }}"
               alt="Foto actividad"
               width="80" height="60"
-              style="object-fit: cover;" />
+              style="object-fit: cover;" 
+              alt="Foto de {{ act.descripcion }}">
               {% else %} 
                 Sin foto
               {% endif %}
             </td>
-    
-            </tr>
-            
           </tr>
         {% endfor %}
       </tbody>
@@ -73,7 +71,8 @@
           {% for foto in act.fotos %}
             <img src="{{ url_for('static', filename='uploads/' ~ foto.nombre_archivo) }}"
               width="320" height="240" style="margin: 10px; cursor: pointer;"
-              onclick="ampliarImagen(this.src)">
+              onclick="ampliarImagen(this.src)"
+              alt="Foto de {{ act.descripcion }}">
           {% endfor %}
          
         </div>
@@ -100,6 +99,7 @@
       <img id="imgGrande" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" 
            alt="Imagen ampliada" 
            style="max-width: 800px; max-height: 600px; margin-top: 50px;">
+">
       <br>
       <button onclick="cerrarImagen()">Cerrar</button>
     </div>

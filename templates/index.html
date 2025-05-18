@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -17,11 +16,12 @@
       <a href="{{ url_for('estadisticas') }}">Estadísticas</a>
     </nav> 
   </header>
+
   {% if mensaje %}
   <div style="background-color: #d4edda; color: #155724; padding: 10px; margin-bottom: 15px; border-radius: 5px;">
     {{ mensaje }}
   </div>
-{% endif %}
+  {% endif %}
 
   <main>
     <section>
@@ -60,11 +60,10 @@
               </td>
               <td>
                 {% if act.fotos|length > 0 %}
-                <img src="{{ url_for('static', filename='uploads/' + act.fotos[0].nombre_archivo) }}" width="100" height="100" />
+                  <img src="{{ url_for('static', filename='uploads/' + act.fotos[0].nombre_archivo) }}" width="100" height="100" alt="Foto de {{ act.descripcion }}">
                 {% else %}
                   No hay imagen
                 {% endif %}
-            
               </td>
             </tr>
           {% endfor %}

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0/">
   <title>Agregar Actividad</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <script src="{{ url_for('static', filename='js/form.js') }}" defer></script>
@@ -51,18 +51,18 @@
       </select>
     
       <label for="sector">Sector</label>
-      <input type="text" id="sector" name="sector" value="{{ request.form.sector or '' }}" />
+      <input type="text" id="sector" name="sector" value="{{ request.form.sector or '' }}" >
     
       <h3>Datos del Organizador</h3>
     
       <label for="nombre">Nombre Completo (Nombre y Apellido)</label>
-      <input type="text" id="nombre" name="nombre" value="{{ request.form.nombre or '' }}" />
+      <input type="text" id="nombre" name="nombre" value="{{ request.form.nombre or '' }}" >
     
       <label for="email">Email</label>
-      <input type="text" id="email" name="email" value="{{ request.form.email or '' }}" />
+      <input type="text" id="email" name="email" value="{{ request.form.email or '' }}" >
     
       <label for="telefono">Número de celular</label>
-      <input type="text" id="telefono" name="telefono" placeholder="+56912345678" value="{{ request.form.telefono or '' }}" />
+      <input type="text" id="telefono" name="telefono" placeholder="+56912345678" value="{{ request.form.telefono or '' }}" >
     
       <label for="contactar-por">Contactar por</label>
       <select id="contactar-por" name="contactar-por">
@@ -77,16 +77,16 @@
       
       <div id="id-red-social-container" style="display: none;">
         <label for="id-red-social">ID o URL de red social</label>
-        <input type="text" id="id-red-social" name="id-red-social" value="{{ request.form.get('id-red-social', '') }}" />
+        <input type="text" id="id-red-social" name="id-red-social" value="{{ request.form.get('id-red-social', '') }}" >
     </div>
       
       <h3>Información de la Actividad</h3>
     
       <label for="dia-hora-inicio">Día y Hora de Inicio</label>
-      <input type="datetime-local" id="dia-hora-inicio" name="dia-hora-inicio" value="{{ request.form['dia-hora-inicio'] or '' }}" />
+      <input type="datetime-local" id="dia-hora-inicio" name="dia-hora-inicio" value="{{ request.form['dia-hora-inicio'] or '' }}" >
     
       <label for="dia-hora-fin">Día y Hora de Término</label>
-      <input type="datetime-local" id="dia-hora-fin" name="dia-hora-fin" value="{{ request.form['dia-hora-fin'] or '' }}" />
+      <input type="datetime-local" id="dia-hora-fin" name="dia-hora-fin" value="{{ request.form['dia-hora-fin'] or '' }}" >
     
       <label for="descripcion">Descripción</label>
       <textarea id="descripcion" name="descripcion" rows="4">{{ request.form.descripcion or '' }}</textarea>
@@ -104,11 +104,11 @@
     
       <div id="tema-otro-container" style="display: none;">
         <label for="tema-otro">Describe el tema:</label>
-        <input type="text" id="tema-otro" name="tema-otro" value="{{ request.form['tema-otro'] or '' }}" />
+        <input type="text" id="tema-otro" name="tema-otro" value="{{ request.form['tema-otro'] or '' }}" >
       </div>
     
       <div id="fotos-container">
-        <input type="file" name="fotos" accept="image/*" />
+        <input type="file" name="fotos" accept="image/*" >
       </div>
       <button type="button" id="agregar-foto">Agregar otra foto</button>
     
