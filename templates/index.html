@@ -12,17 +12,24 @@
   <header>
     <h1>Bienvenido al Sistema de Actividades Sociales</h1>
     <nav>
-      <a href="{{ url_for('formulario') }}">Agregar Actividad</a>
+      <a href="{{ url_for('agregar_actividad') }}">Agregar Actividad</a>
       <a href="{{ url_for('listado') }}">Ver Listado de Actividades</a>
       <a href="{{ url_for('estadisticas') }}">Estadísticas</a>
     </nav> 
   </header>
+  {% if mensaje %}
+  <div style="background-color: #d4edda; color: #155724; padding: 10px; margin-bottom: 15px; border-radius: 5px;">
+    {{ mensaje }}
+  </div>
+{% endif %}
+
   <main>
     <section>
       <h2>Últimas 5 actividades</h2>
       <table>
         <thead>
           <tr>
+            <th>Nombre</th>
             <th>Inicio</th>
             <th>Término</th>
             <th>Comuna</th>
@@ -34,8 +41,16 @@
         <tbody>
           {% for act in actividades %}
             <tr>
-              <td>{{ act.dia_hora_inicio }}</td>
-              <td>{{ act.dia_hora_termino or "-" }}</td>
+              <td>{{ act.descripcion }}</td>
+              <td>{{ act.dia_hora_inicio.strftime('%d-%m-%Y %H:%M') }}</td>
+              <td>
+                {% if act.dia_hora_termino %}
+                  {{ act.dia_hora_termino.strftime('%d-%m-%Y %H:%M') }}
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+              
               <td>{{ act.comuna.nombre }}</td>
               <td>{{ act.sector }}</td>
               <td>
@@ -44,11 +59,12 @@
                 {% endfor %}
               </td>
               <td>
-                {% if act.fotos %}
-                  <img src="{{ url_for('static', filename='uploads/' + act.fotos[0].nombre_archivo) }}" width="100" height="100" />
+                {% if act.fotos|length > 0 %}
+                <img src="{{ url_for('static', filename='uploads/' + act.fotos[0].nombre_archivo) }}" width="100" height="100" />
                 {% else %}
-                  Sin foto
+                  No hay imagen
                 {% endif %}
+            
               </td>
             </tr>
           {% endfor %}

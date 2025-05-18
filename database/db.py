@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, Text, DateTime, Table
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, Enum, DateTime, Table
 from sqlalchemy.orm import declarative_base, relationship, sessionmaker
 from sqlalchemy.sql import func
 
@@ -74,9 +74,11 @@ class ContactarPor(Base):
 class ActividadTema(Base):
     __tablename__ = 'actividad_tema'
 
+
     id = Column(Integer, primary_key=True)
-    tema = Column(Enum('música', 'deporte', 'ciencias', 'religión', 'política', 'tecnología', 'juegos', 'baile', 'comida', 'otro'), nullable=False)
-    glosa_otro = Column(String(15))
-    actividad_id = Column(Integer, ForeignKey('actividad.id'), nullable=False)
+    actividad_id = Column(Integer, ForeignKey('actividad.id'))
+    tema = Column(String(100), nullable=False)
+    glosa_otro = Column(String(100), nullable=True)
 
     actividad = relationship("Actividad", back_populates="temas")
+    
