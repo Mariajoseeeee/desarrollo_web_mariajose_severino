@@ -11,8 +11,14 @@ body {
     padding: 1em;
     text-align: center;
   }
-
-
+  #tablaActividades {
+    border-collapse: collapse;
+    border: 1px solid black;
+  }
+  #tablaActividades th, #tablaActividades td {
+    border: 1px solid black;
+    padding: 8px;
+  }
   
   
   nav a {
