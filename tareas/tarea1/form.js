@@ -73,7 +73,14 @@ let nombre = myForm["nombre"].value;
 let email = myForm["email"].value;
 let telefono = myForm["telefono"].value;
 let contactarPor = myForm["contactar-por"].value;
-let idRedSocial = myForm["id-red-social"]?.value || "";
+let idRedSocial = "";
+const inputsContacto = document.querySelectorAll('#contactMethodsContainer input');
+inputsContacto.forEach(input => {
+  if (input.parentElement.style.display !== 'none') {
+    idRedSocial = input.value;
+  }
+});
+
 let inicio = myForm["dia-hora-inicio"].value;
 let termino = myForm["dia-hora-fin"].value;
 let tema = myForm["tema"].value;

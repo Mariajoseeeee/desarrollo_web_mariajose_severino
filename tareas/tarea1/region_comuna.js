@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
         regionSeleccionada.comunas.forEach(comuna => {
             const option = document.createElement('option');
             option.value = comuna.id;
-            option.textCo ntent = comuna.nombre;
+            option.textContent = comuna.nombre;
             comunaSelect.appendChild(option);
         });
         } else {
