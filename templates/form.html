@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+  <meta charset="UTF-8" >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agregar Actividad</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="{{ url_for('static', filename='js/form.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/region_comuna.js') }}" defer></script>
+
+</head>
+<body>
+  <header>
+    <h1>Formulario de Nueva Actividad</h1>
+  </header>
+  <main>
+    {% if error %}
+    <div style="color: red; font-weight: bold;">
+      {{ error }}
+    </div>
+  {% endif %}
+
+  {% if errores %}
+    <ul style="color: red;">
+      {% for err in errores %}
+        <li>{{ err }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+  
+  <div id="val-box" style="display:none; border-left: 5px solid red; background-color: #ffdddd; padding: 10px; margin-bottom: 10px;">
+    <p id="val-msg"></p>
+    <ul id="val-list"></ul>
+  </div>
+  
+    <form id="form-actividades" name="myForm" action="/agregar_actividad" method="POST" enctype="multipart/form-data">
+
+      <h3>Información del Lugar</h3>
+    
+      <label for="region">Región:</label>
+      <select id="region" name="region">
+        <option value="">Seleccione una región</option>
+      </select>
+    
+      <label for="comuna">Comuna:</label>
+      <select id="comuna" name="comuna" disabled>
+        <option value="">Seleccione una comuna</option>
+      </select>
+    
+      <label for="sector">Sector</label>
+      <input type="text" id="sector" name="sector" value="{{ request.form.sector or '' }}" >
+    
+      <h3>Datos del Organizador</h3>
+    
+      <label for="nombre">Nombre Completo (Nombre y Apellido)</label>
+      <input type="text" id="nombre" name="nombre" value="{{ request.form.nombre or '' }}" >
+    
+      <label for="email">Email</label>
+      <input type="text" id="email" name="email" value="{{ request.form.email or '' }}" >
+    
+      <label for="telefono">Número de celular</label>
+      <input type="text" id="telefono" name="telefono" placeholder="+56912345678" value="{{ request.form.telefono or '' }}" >
+    
+      <label for="contactar-por">Contactar por</label>
+      <select id="contactar-por" name="contactar-por">
+        <option value="">Seleccione una opción</option>
+        <option value="whatsapp" {% if request.form.get('contactar-por') == 'whatsapp' %}selected{% endif %}>WhatsApp</option>
+        <option value="telegram" {% if request.form.get('contactar-por') == 'telegram' %}selected{% endif %}>Telegram</option>
+        <option value="X" {% if request.form.get('contactar-por') == 'X' %}selected{% endif %}>X</option>
+        <option value="instagram" {% if request.form.get('contactar-por') == 'instagram' %}selected{% endif %}>Instagram</option>
+        <option value="tiktok" {% if request.form.get('contactar-por') == 'tiktok' %}selected{% endif %}>TikTok</option>
+        <option value="otra" {% if request.form.get('contactar-por') == 'otra' %}selected{% endif %}>Otra</option>
+      </select>
+      
+      <div id="id-red-social-container" style="display: none;">
+        <label for="id-red-social">ID o URL de red social</label>
+        <input type="text" id="id-red-social" name="id-red-social" placeholder="Ingrese su ID o URL de red social">
+      </div>
+      
+      <h3>Información de la Actividad</h3>
+    
+      <label for="dia-hora-inicio">Día y Hora de Inicio</label>
+      <input type="datetime-local" id="dia-hora-inicio" name="dia-hora-inicio" value="{{ request.form['dia-hora-inicio'] or '' }}" >
+    
+      <label for="dia-hora-fin">Día y Hora de Término</label>
+      <input type="datetime-local" id="dia-hora-fin" name="dia-hora-fin" value="{{ request.form['dia-hora-fin'] or '' }}" >
+    
+      <label for="descripcion">Descripción</label>
+      <textarea id="descripcion" name="descripcion" rows="4" maxlength="500">{{ request.form.descripcion or '' }}</textarea>
+
+      <fieldset>
+        <legend>Temas</legend>
+        {% for t in ['música', 'deporte', 'ciencias', 'religión', 'política', 'tecnología', 'juegos', 'baile', 'comida', 'otro'] %}
+          <label>
+            <input type="checkbox" name="temas" value="{{ t }}" {% if t in request.form.getlist('temas') %}checked{% endif %}>
+            {{ t.capitalize() }}
+          </label><br>
+        {% endfor %}
+      </fieldset>
+      
+      <div id="tema-otro-container" style="display: none;">
+        <label for="tema-otro">Describe el tema:</label>
+        <input type="text" id="tema-otro" name="tema-otro" maxlength="15" value="{{ request.form['tema-otro'] or '' }}" >
+      </div>
+    
+      <div id="fotos-container">
+        <input type="file" name="fotos[]" accept="image/*" multiple>
+      </div>
+      <button type="button" id="agregar-foto">Agregar otra foto</button>
+    
+      <button type="submit" id="submit-btn">Agregar esta actividad</button>
+    </form>
+    
+    <div id="mensaje-confirmacion" style="display: none;">
+      <p>¿Estás seguro de que quieres enviar esta actividad?</p>
+      <button type="button" id="confirmar-si">Sí, estoy seguro</button>
+      <button type="button" id="confirmar-no">No, no estoy seguro, quiero volver al formulario</button>
+    </div>
+
+    <a href="{{ url_for('index') }}">Volver a la portada</a>
+
+  </main>
+</body>
+</html>
