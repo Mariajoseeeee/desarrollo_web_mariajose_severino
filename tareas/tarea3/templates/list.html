@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" >
+  <meta name="viewport" content="width=device-width, initial-scale=1" >
+  <title>Listado de Actividades</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" >
+  <script src="{{ url_for('static', filename='js/listado.js') }}" defer></script>
+</head>
+<body>
+  <header><h1>Listado de Actividades</h1></header>
+  <main>
+    <table id="tablaActividades" class="tabla-actividades" >
+      <thead>
+        <tr>
+          <th>Nombre</th><th>Comuna</th><th>Inicio</th><th>Término</th><th>Imagen</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for act in actividades %}
+          <tr data-id="{{ act.id }}" class="fila-actividad">
+            <td>{{ act.descripcion }}</td>
+            <td>{{ act.comuna.nombre }}</td>
+            <td class="fecha">
+              {% if act.dia_hora_inicio %}
+                {{ act.dia_hora_inicio.strftime('%d-%m-%Y %H:%M') }}
+              {% else %}
+                -
+              {% endif %}
+            </td>
+
+            <td class="fecha">
+              {% if act.dia_hora_termino %}
+                {{ act.dia_hora_termino.strftime('%d-%m-%Y %H:%M') }}
+              {% else %}
+                -
+              {% endif %}
+            </td>
+
+            <td> 
+              {% if act.fotos and act.fotos|length > 0 %}
+              <img src="{{ url_for('static', filename='uploads/' ~ act.fotos[0].nombre_archivo) }}"
+              width="80" height="60"
+              style="object-fit: cover;" 
+              alt="Foto de {{ act.descripcion }}">
+              {% else %} 
+                Sin foto
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div id="detalleActividad" style="display: none;">
+      {% for act in actividades %}
+        <div id="detalle-{{ act.id }}" class="detalle-item" style="display: none;">
+          <h2>Detalle Actividad</h2>
+
+          <p class="fecha-detalle"><strong>Inicio:</strong> {{ act.dia_hora_inicio.strftime('%d-%m-%Y %H:%M') }}</p>
+          <p class="fecha-detalle"><strong>Término:</strong> 
+            {% if act.dia_hora_termino %}
+              {{ act.dia_hora_termino.strftime('%d-%m-%Y %H:%M') }}
+            {% else %}
+              -
+            {% endif %}
+          </p>    
+          <p><strong>Comuna:</strong> {{ act.comuna.nombre }}</p>
+          <p><strong>Sector:</strong> {{ act.sector or '-' }}</p>
+          <p><strong>Tema(s):</strong>
+            {% if act.temas and act.temas|length > 0 %}
+              {% for t in act.temas %}
+                {% if t.tema == 'otro' and t.glosa_otro %}
+                  {{ t.glosa_otro }}{% if not loop.last %}, {% endif %}
+                {% else %}
+                  {{ t.tema }}{% if not loop.last %}, {% endif %}
+                {% endif %}
+              {% endfor %}
+            {% else %}
+              -
+            {% endif %}
+          </p>
+          
+          <p><strong>Organizador:</strong> {{ act.nombre }}</p>
+          <p><strong>Email:</strong> {{ act.email }}</p>
+          <p><strong>Teléfono:</strong> {{ act.celular or '-' }}</p>
+          <p><strong>Descripción:</strong> {{ act.descripcion or '-' }}</p>
+
+          {% for foto in act.fotos %}
+            <img src="{{ url_for('static', filename='uploads/' ~ foto.nombre_archivo) }}"
+              width="320" height="240" style="margin: 10px; cursor: pointer;"
+              onclick="ampliarImagen(this.src)"
+              alt="Foto de {{ act.descripcion }}">
+          {% endfor %}
+         
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="pagination">
+        {% if pagina_actual > 1 %}
+            <a href="{{ url_for('listado', page=pagina_actual - 1) }}">← Anterior</a>
+        {% endif %}
+    
+        Página {{ pagina_actual }} de {{ total_paginas }}
+    
+        {% if pagina_actual < total_paginas %}
+            <a href="{{ url_for('listado', page=pagina_actual + 1) }}">Siguiente →</a>
+        {% endif %}
+    </div>
+
+    <button id="volverListado" style="display:none;">Volver a la lista</button>
+    <a href="{{ url_for('index') }}">Volver a la portada</a>
+
+    <div id="imagenAmpliada" style="display: none; position: fixed; top: 0; left: 0; 
+      width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); text-align: center;">
+      <img id="imgGrande" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" 
+           alt="Imagen ampliada" 
+           style="max-width: 800px; max-height: 600px; margin-top: 50px;">
+      <br>
+      <button onclick="cerrarImagen()">Cerrar</button>
+    </div>
+    <div id="comentarios" style="display:none;">
+      <h3>Comentarios</h3>
+      <ul id="lista-comentarios">
+        {% for c in comentarios %}
+          <li class="comentario-item">
+            <div class="nombre">{{ c.nombre }}</div>
+            <div class="texto">{{ c.texto }}</div>
+            <div class="fecha-comentario">{{ c.fecha.strftime('%d-%m-%Y %H:%M') }}</div>
+          </li>
+        {% endfor %}
+      </ul>
+
+      <h4>Agregar comentario</h4>
+      <form id="form-comentario">
+          <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required minlength="3" maxlength="80"><br>
+          <textarea id="texto" name="texto" rows="4" cols="50" placeholder="Escribe tu comentario..." required></textarea><br>
+          <button type="submit">Agregar comentario</button>
+      </form>
+      <div id="errores-comentario" style="color: red;"></div>
+    </div>
+
+  </main>
+</body>
+</html>

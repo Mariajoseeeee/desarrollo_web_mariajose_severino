@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Estadísticas</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script defer src="{{ url_for('static', filename='js/graficos.js') }}"></script>
+</head>
+<body>
+    <h1 id ="titulo-estadisticas">Estadísticas</h1>
+
+    <div id="grafico-lineas" style="width: 80%; height: 400px; margin: auto;"></div>
+    <div id="grafico-torta" style="width: 80%; height: 400px; margin: auto;"></div>
+    <div id="grafico-barras" style="width: 80%; height: 400px; margin: auto;"></div>
+
+    <a href="{{ url_for('index') }}" class="boton-rosado">Volver a la portada</a>
+
+</body>
+</html>
+
